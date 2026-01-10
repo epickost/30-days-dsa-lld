@@ -1,0 +1,26 @@
+class Solution {
+    public int maxArea(int[] height) {
+
+        int maxwater=0;
+
+        int start=0;
+        int end=height.length-1;
+        //loop to collect most water.
+        while(start<end) {
+            int water=0;
+            if(height[start]>height[end]) {
+                water=(end-start)*height[end];
+                end--;
+            }
+            else {
+                water=(end-start)*height[start];
+                start++;
+            }
+
+            maxwater=Math.max(maxwater,water);
+        }
+
+        return maxwater;
+
+    }
+}
