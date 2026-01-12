@@ -1,0 +1,25 @@
+//Model a Book and a LibraryMember.
+
+-->properties: id,title,author
+-->properties : memberId,name
+
+class Book {
+  int id;
+  int title;
+  String author;
+  Book(int id,int title,String author) {
+    this.id=id;
+    this.title=title;
+    this.author=author;
+  }
+}
+
+class LibraryMember {
+   int memberId;
+   String name;
+   LibraryMember(int memberid,String name) {
+     this.memberId=memberid;
+     this.name=name;
+   }
+}
+

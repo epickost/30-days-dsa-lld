@@ -1,0 +1,22 @@
+Task
+Model a Computer and its CPU.
+
+so here i can use composition has computer has a cpu
+instead of computer is a cpu.
+
+class Cpu {
+  public void process() {
+   System.out.println("Process");
+  };
+}
+
+class Computer {
+   Cpu cpu;
+   Computer(Cpu cpu) {
+     this.cpu=cpu;
+   }
+   public void start() {
+     cpu.process();
+   }
+}
+

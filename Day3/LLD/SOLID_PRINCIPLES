@@ -1,0 +1,328 @@
+S — Single Responsibility Principle (SRP)
+
+Des: each class should  have only one responsibility.
+if it has mulitple responsibilites then if any change to one
+
+Create a class OrderService that:
+creates order
+prints order
+saves order
+
+class OrderService {
+  public void createOrder() {};
+  public void printOrder() {};
+  public void saveorder() {};
+}
+
+//after
+
+//split each class into single responsibility
+
+class OrderService {
+  public void createOrder()
+  {
+    //create order
+  }
+}
+
+class PrintService {
+  public void printOrder() {
+  // prints the order
+  }
+
+class OrderRepository {
+ public void saveorder() {
+  // save the order.
+ }
+}
+}
+
+
+* **What it means (simple)**
+* **When to apply**
+* **Bad example**
+* **Good example**
+* **One-line takeaway**
+
+
+# 📘 S — Single Responsibility Principle (SRP)
+
+### What it means
+
+A class should have **only one reason to change**.
+
+### When to apply
+
+When a class is doing **more than one job**.
+
+---
+
+### ❌ Bad Example
+
+```java
+class OrderService {
+    void createOrder() { }
+    void printOrder() { }
+    void saveOrder() { }
+}
+```
+
+Why bad:
+
+* Business logic
+* Printing
+* Persistence
+  All mixed.
+
+---
+
+### ✅ Good Example
+
+```java
+class Order {
+    void create() { }
+}
+
+class OrderPrinter {
+    void print(Order order) { }
+}
+
+class OrderRepository {
+    void save(Order order) { }
+}
+```
+
+---
+
+### Takeaway
+
+👉 **One class = one responsibility**
+
+---
+
+# 📘 O — Open / Closed Principle (OCP)
+
+### What it means
+
+Classes should be **open for extension**, but **closed for modification**.
+
+### When to apply
+
+When you keep adding `if-else` for new behavior.
+
+---
+
+### ❌ Bad Example
+
+```java
+class PaymentService {
+    double pay(String type, double amount) {
+        if (type.equals("CARD")) return amount * 0.9;
+        if (type.equals("UPI")) return amount * 0.95;
+        return amount;
+    }
+}
+```
+
+---
+
+### ✅ Good Example
+
+```java
+interface Payment {
+    double pay(double amount);
+}
+
+class CardPayment implements Payment {
+    public double pay(double amount) {
+        return amount * 0.9;
+    }
+}
+
+class UPIPayment implements Payment {
+    public double pay(double amount) {
+        return amount * 0.95;
+    }
+}
+```
+
+---
+
+### Takeaway
+
+👉 **Add new code, don’t edit old code**
+
+---
+
+# 📘 L — Liskov Substitution Principle (LSP)
+
+### What it means
+
+A child class should **not break the behavior** of its parent.
+
+### When to apply
+
+When inheritance feels “forced”.
+
+---
+
+### ❌ Bad Example
+
+```java
+class Bird {
+    void fly() { }
+}
+
+class Penguin extends Bird {
+    void fly() {
+        throw new RuntimeException("Can't fly");
+    }
+}
+```
+
+---
+
+### ✅ Good Example
+
+```java
+interface Bird { }
+
+interface FlyingBird extends Bird {
+    void fly();
+}
+
+class Sparrow implements FlyingBird {
+    public void fly() { }
+}
+
+class Penguin implements Bird { }
+```
+
+---
+
+### Takeaway
+
+👉 **If subclass surprises you, hierarchy is wrong**
+
+---
+
+# 📘 I — Interface Segregation Principle (ISP)
+
+### What it means
+
+Don’t force classes to implement methods they don’t need.
+
+### When to apply
+
+When an interface feels “fat”.
+
+---
+
+### ❌ Bad Example
+
+```java
+interface Machine {
+    void print();
+    void scan();
+    void fax();
+}
+```
+
+```java
+class Printer implements Machine {
+    public void print() { }
+    public void scan() { }  // not needed
+    public void fax() { }   // not needed
+}
+```
+
+---
+
+### ✅ Good Example
+
+```java
+interface Printer {
+    void print();
+}
+
+interface Scanner {
+    void scan();
+}
+```
+
+---
+
+### Takeaway
+
+👉 **Small interfaces are better**
+
+---
+
+# 📘 D — Dependency Inversion Principle (DIP)
+
+### What it means
+
+High-level code should depend on **interfaces**, not concrete classes.
+
+### When to apply
+
+When a dependency may change (DB, API, service).
+
+---
+
+### ❌ Bad Example
+
+```java
+class MySQLDatabase {
+    void save() { }
+}
+
+class UserService {
+    MySQLDatabase db = new MySQLDatabase();
+}
+```
+
+---
+
+### ✅ Good Example
+
+```java
+interface Database {
+    void save();
+}
+
+class MySQLDatabase implements Database {
+    public void save() { }
+}
+
+class UserService {
+    Database db;
+
+    UserService(Database db) {
+        this.db = db;
+    }
+}
+```
+
+---
+
+### Takeaway
+
+👉 **Depend on abstractions, not details**
+
+---
+
+# 🧠 One-page SOLID memory cheat
+
+* **S** → One class, one job
+* **O** → Extend, don’t modify
+* **L** → Subclass shouldn’t break parent
+* **I** → Small interfaces
+* **D** → Use interfaces for changeable things
+
+---
+
+
+
+
+
