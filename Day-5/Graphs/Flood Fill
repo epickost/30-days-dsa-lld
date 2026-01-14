@@ -1,0 +1,32 @@
+class Solution {
+    public void fillpixels(boolean [][]visited,int[][] image,int sr,int sc,int exisiting,int color)
+    {
+        if(visited[sr][sc]){
+            return;
+        }
+        visited[sr][sc]=true;
+        if(image[sr][sc]==exisiting) {
+               image[sr][sc]=color;
+        }
+
+        int arr[][]={{1,0},{0,1},{-1,0},{0,-1}};
+
+        for(int a[]:arr) {
+            int row=a[0]+sr;
+            int col=a[1]+sc;
+
+            if(row<image.length && col<image[0].length && row>=0 && col>=0 && image[row][col]==exisiting) {
+                fillpixels(visited,image,row,col,exisiting,color);
+            }
+        }
+    }
+    public int[][] floodFill(int[][] image, int sr, int sc, int color) {
+
+        int row=image.length;
+        int col=image[0].length;
+        boolean visited[][]=new boolean[row][col];
+        int existing=image[sr][sc];
+        fillpixels(visited,image,sr,sc,existing,color);
+        return image;
+    }
+}
