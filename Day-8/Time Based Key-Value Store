@@ -1,0 +1,57 @@
+class TimeMap {
+    HashMap<String,List<String>>values;
+    HashMap<String,List<Integer>>timestamps;
+    public TimeMap() {
+        values=new HashMap<>();
+        timestamps=new HashMap<>();
+    }
+
+    public void set(String key, String value, int timestamp) {
+        if(values.containsKey(key)) {
+            values.get(key).add(value);
+        }
+        else {
+        values.put(key,new ArrayList<String>());
+        values.get(key).add(value);
+        }
+
+        //timestamps
+        if(timestamps.containsKey(key)) {
+            timestamps.get(key).add(timestamp);
+        }
+        else {
+          timestamps.put(key,new ArrayList<Integer>());
+          timestamps.get(key).add(timestamp);
+        }
+    }
+
+    public String get(String key, int timestamp) {
+         if (!values.containsKey(key)) return "";
+
+        List<String>keyvalue=values.get(key);
+        List<Integer>keytimstamps=timestamps.get(key);
+        int start=0;
+        int end=keytimstamps.size()-1;
+        String findtimestamp="";
+
+        while(start<=end) {
+            int mid=start+ (end-start)/2;
+            if(keytimstamps.get(mid)<=timestamp) {
+                findtimestamp=keyvalue.get(mid);
+                start=mid+1;
+            }
+            else {
+                end=mid-1;
+            }
+
+        }
+        return findtimestamp;
+    }
+}
+
+/**
+ * Your TimeMap object will be instantiated and called as such:
+ * TimeMap obj = new TimeMap();
+ * obj.set(key,value,timestamp);
+ * String param_2 = obj.get(key,timestamp);
+ */

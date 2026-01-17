@@ -1,0 +1,67 @@
+class Solution {
+    public String foreignDictionary(String[] words) {
+      Map<Character,Set<Character>>graph=new HashMap<>();
+      Map<Character,Integer>indegree=new HashMap<>();
+
+      //initliaze all characters
+      for(String word:words) {
+        for(char c : word.toCharArray()) {
+            graph.putIfAbsent(c,new HashSet<>());
+            indegree.putIfAbsent(c,0);
+        }
+      }
+
+      //compare and fill it.
+      for(int i=0;i<words.length-1;i++) {
+        String word1=words[i];
+        String word2=words[i+1];
+
+        if(word1.length()>word2.length() && word1.startsWith(word2)) {
+            return "";
+        }
+
+        int len=Math.min(word1.length(),word2.length());
+
+        for(int i1=0;i1<len;i1++) {
+            char c1=word1.charAt(i1);
+            char c2=word2.charAt(i1);
+
+            if(c1!=c2) {
+                if(!graph.get(c1).contains(c2)) {
+                graph.get(c1).add(c2);
+                indegree.put(c2,indegree.get(c2)+1);
+                }
+                break;
+            }
+        }
+      }
+
+      //take all indegree-0 out and push to queue. //topo
+      Queue<Character>q=new LinkedList<>();
+      for(char c: indegree.keySet()) {
+         if(indegree.get(c)==0) {
+            q.add(c);
+         }
+      }
+
+      StringBuilder order=new StringBuilder();
+      int wordscompleted=0;
+
+      while(!q.isEmpty()) {
+        char c=q.poll();
+        wordscompleted++;
+        order.append(c);
+
+        //its neighbors
+        for(char c1:graph.get(c)) {
+            indegree.put(c1,indegree.get(c1)-1);
+              if(indegree.get(c1)==0) {
+              q.offer(c1);
+          }
+        }
+      }
+
+      return wordscompleted==indegree.size() ? order.toString() : "";
+
+    }
+}
