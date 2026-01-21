@@ -1,0 +1,55 @@
+class Solution {
+    public List<List<Integer>> pacificAtlantic(int[][] heights) {
+
+        boolean pacific[][]=new boolean[heights.length][heights[0].length];
+        boolean atlantic[][]=new boolean[heights.length][heights[0].length];
+
+        List<List<Integer>>water=new ArrayList<>();
+
+        int hr=heights.length;
+        int hc=heights[0].length;
+
+        for(int i=0;i<heights.length;i++) {
+            bfs(heights,pacific,i,0);
+            bfs(heights,atlantic,i,hc-1);
+        }
+
+        for(int j=0;j<heights[0].length;j++) {
+            bfs(heights,pacific,0,j);
+            bfs(heights,atlantic,hr-1,j);
+        }
+
+        for(int i=0;i<hr;i++) {
+            for(int j=0;j<hc;j++) {
+                if(pacific[i][j] && atlantic[i][j]) {
+                    ArrayList<Integer>arr=new ArrayList<>();
+                    arr.add(i);
+                    arr.add(j);
+                    water.add(arr);
+                }
+            }
+        }
+        return water;
+    }
+
+    public void bfs(int[][] heights,boolean[][] visited,int i,int j) {
+
+            if(visited[i][j]) {
+                return ;
+            }
+            visited[i][j]=true;
+
+            int dir[][]={{1,0},{-1,0},{0,1},{0,-1}};
+
+            for(int arr[]:dir) {
+                int r1=arr[0]+i;
+                int c1=arr[1]+j;
+
+                if(r1>=0 && c1>=0 && r1<heights.length
+                  && c1<heights[0].length && heights[r1][c1]>=heights[i][j]
+                  && visited[r1][c1]!=true ) {
+                     bfs(heights,visited,r1,c1);
+                  }
+            }
+    }
+}

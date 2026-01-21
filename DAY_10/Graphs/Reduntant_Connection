@@ -1,0 +1,52 @@
+class Solution {
+    public int[] findRedundantConnection(int[][] edges) {
+        List<List<Integer>>graph=new ArrayList<>();
+       // boolean visited[]=new boolean[edges.length];
+
+        for(int i=0;i<=edges.length;i++) {
+            graph.add(new ArrayList<Integer>());
+        }
+
+        for(int arr[]:edges) {
+            int v1=arr[0];
+            int v2=arr[1];
+            graph.get(v1).add(v2);
+            graph.get(v2).add(v1);
+        }
+
+       //find reduntant
+
+       for(int i=edges.length-1;i>=0;i--) {
+          int arr[]=new int[2];
+          arr[0]=edges[i][0];
+          arr[1]=edges[i][1];
+          int v1=arr[0];
+          int v2=arr[1];
+          graph.get(v1).remove((Integer) v2);
+          graph.get(v2).remove((Integer) v1);
+          ArrayList<Integer>nodes=new ArrayList<>();
+          boolean visited[]=new boolean[edges.length+1];
+          validTree(visited,nodes,graph,v1);
+          if(nodes.size()==edges.length) {
+            return arr;
+          }
+          graph.get(v1).add(v2);
+          graph.get(v2).add(v1);
+       }
+
+       return new int[2];
+
+    }
+
+    public void validTree(boolean visited[],ArrayList<Integer>nodes,List<List<Integer>>graph,int node) {
+        if(!visited[node]) {
+            nodes.add(node);
+            visited[node]=true;
+
+            for(int nei:graph.get(node)) {
+                validTree(visited,nodes,graph,nei);
+            }
+        }
+        return ;
+    }
+}

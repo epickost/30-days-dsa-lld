@@ -1,0 +1,46 @@
+class Solution {
+
+    public boolean fairdistibution(int mid,int cookies[],int k) {
+        int child=1;
+        int sum=cookies[0];
+
+        for(int i=1;i<cookies.length;i++) {
+            if(sum+cookies[i]<=mid) {
+                sum+=cookies[i];
+            }
+            else {
+                child+=1;
+                sum=cookies[i];
+            }
+        }
+
+        return child<=k;
+    }
+    public int splitArray(int[] nums, int k) {
+        int min=0;
+        int max=0;
+        int maxdis=Integer.MAX_VALUE;
+
+        for(int i:nums) {
+            min=Math.max(i,min);
+            max+=i;
+        }
+
+        int start=min;
+        int end=max;
+
+        while(start<end) {
+            int mid=start + (end-start)/2;
+
+            if(fairdistibution(mid,nums,k)) {
+                //max=Math.min(max,mid);
+                end=mid;
+            }
+            else {
+                start=mid+1;
+            }
+        }
+
+        return start;
+    }
+}
