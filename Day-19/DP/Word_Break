@@ -1,0 +1,31 @@
+class Solution {
+    public boolean wordBreak(String s, List<String> wordDict) {
+        HashSet<String>hs=new HashSet<>();
+
+        int maxlen=0;
+
+        for(String p:wordDict) {
+            maxlen=Math.max(maxlen,p.length());
+            hs.add(p);
+        }
+
+        boolean dp[]=new boolean[s.length()+1];
+        dp[0]=true;
+
+
+
+        for(int i=1;i<=s.length();i++) {
+
+            for(int j=i-1;j>=Math.max(0,i-maxlen);j--) {
+
+                String t=s.substring(j,i);
+
+                if(dp[j] && hs.contains(t)) {
+                    dp[i]=true;
+                }
+            }
+        }
+
+        return dp[s.length()];
+    }
+}
